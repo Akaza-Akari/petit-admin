@@ -14,7 +14,12 @@ if ($conn->connect_error) {
 
 $sql = "SELECT * FROM ".$db_table.";";
 $result = $conn->query($sql);
-$sqlarray = $result->fetch_array(MYSQLI_ASSOC);
+if($result) {
+	$sqlarray = $result->fetch_array(MYSQLI_ASSOC);
+} else {
+	echo $conn->error;
+	die();
+}
 
 foreach($sqlarray as $row) {
 	var_dump($row);
