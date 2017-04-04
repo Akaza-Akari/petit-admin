@@ -12,7 +12,7 @@ if ($conn->connect_error) {
 	die('Connection failed: ' . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM ".$db_table.";";
+$sql = "SELECT * FROM `".$db_table."`;";
 $result = $conn->query($sql);
 if($result) {
 	$sqlarray = $result->fetch_array(MYSQLI_ASSOC);
