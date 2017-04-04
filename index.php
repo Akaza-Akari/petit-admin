@@ -1,6 +1,8 @@
 <?php
 $config = require_once 'config.php';
 
+$rows = array();
+
 $db_host = $config['db_host'];
 $db_user = $config['db_user'];
 $db_pass = $config['db_pass'];
@@ -21,6 +23,8 @@ if($result) {
 	die();
 }
 
+while($row = $sqlarray)
+	$rows[] = $row;
 foreach($sqlarray as $row) {
 	var_dump($row);
 }
