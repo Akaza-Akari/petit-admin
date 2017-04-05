@@ -15,8 +15,7 @@ if ($conn->connect_error) {
 	die('Connection failed: ' . $conn->connect_error);
 }
 
-function table($data) {
-echo (?>
+function table($data) { ?>
 <tr>
 	<td><?php echo $data['number']; ?></td>
 	<td><?php echo $data['date']; ?></td>
@@ -32,8 +31,7 @@ echo (?>
 	<td><?php echo $data['cf_ip']; ?></td>
 	<td><?php echo $data['passed']; ?></td>
 </tr>
-<?php);
-}
+<?php }
 
 $sql = "SELECT * FROM `".$db_table."`;";
 $result = $conn->query($sql);
