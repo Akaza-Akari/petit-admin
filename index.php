@@ -17,14 +17,12 @@ if ($conn->connect_error) {
 
 $sql = "SELECT * FROM `".$db_table."`;";
 $result = $conn->query($sql);
-if($result) {
-	$sqlarray = $result->fetch_array(MYSQLI_ASSOC);
-} else {
+if(!$result) {
 	echo $conn->error;
 	die();
 }
 
-while($row = $sqlarray)
+while($row = $result->fetch_array(MYSQLI_ASSOC))
 	$rows[] = $row;
 foreach($sqlarray as $row) {
 	echo 'Row Data : '.$row;
