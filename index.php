@@ -40,4 +40,5 @@ foreach($rows as $row) {
 	data('web_ip');
 	data('cf_ip');
 	data('passed');
+	echo '<br>';
 }
