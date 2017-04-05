@@ -40,7 +40,7 @@ if(!$result) {
 	die();
 }
 
-echo (?>
+?>
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -60,7 +60,7 @@ echo (?>
 		</tr>
 	</thead>
 	<tbody>
-<?php);
+<?php
 while($row = $result->fetch_array(MYSQLI_ASSOC))
 	$rows[] = $row;
 foreach($rows as $row) {
@@ -69,7 +69,6 @@ foreach($rows as $row) {
 	table($row);
 	echo '<br>';
 }
-echo (?>
+?>
 	</tbody>
 </table>
-<?php)
