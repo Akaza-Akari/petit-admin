@@ -26,5 +26,5 @@ if($result) {
 while($row = $sqlarray)
 	$rows[] = $row;
 foreach($sqlarray as $row) {
-	var_dump($row);
+	echo 'Row Data : '.$row;
 }
