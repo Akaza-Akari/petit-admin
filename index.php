@@ -15,7 +15,25 @@ if ($conn->connect_error) {
 	die('Connection failed: ' . $conn->connect_error);
 }
 
-function data($req) { global $row; echo $req.' : '.$row[$req]; echo '<br>'; }
+function table($data) {
+echo (?>
+<tr>
+	<td><?php echo $data['number']; ?></td>
+	<td><?php echo $data['date']; ?></td>
+	<td><?php echo $data['noti_type']; ?></td>
+	<td><?php echo $data['osu_id']; ?></td>
+	<td><?php echo $data['osu_mode']; ?></td>
+	<td><?php echo $data['twitter_id']; ?></td>
+	<td><?php echo $data['twitter_email']; ?></td>
+	<td><?php echo $data['email_address']; ?></td>
+	<td><?php echo $data['email_verifying_key']; ?></td>
+	<td><?php echo $data['email_verified']; ?></td>
+	<td><?php echo $data['web_ip']; ?></td>
+	<td><?php echo $data['cf_ip']; ?></td>
+	<td><?php echo $data['passed']; ?></td>
+</tr>
+<?php);
+}
 
 $sql = "SELECT * FROM `".$db_table."`;";
 $result = $conn->query($sql);
@@ -24,21 +42,36 @@ if(!$result) {
 	die();
 }
 
+echo (?>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>number</th>
+			<th>date</th>
+			<th>noti_type</th>
+			<th>osu_id</th>
+			<th>osu_mode</th>
+			<th>twitter_id</th>
+			<th>twitter_email</th>
+			<th>email_address</th>
+			<th>email_verifying_key</th>
+			<th>email_verified</th>
+			<th>web_ip</th>
+			<th>cf_ip</th>
+			<th>passed</th>
+		</tr>
+	</thead>
+	<tbody>
+<?php);
 while($row = $result->fetch_array(MYSQLI_ASSOC))
 	$rows[] = $row;
 foreach($rows as $row) {
-	data('number');
-	data('date');
-	data('noti_type');
-	data('osu_id');
-	data('osu_mode');
-	data('twitter_id');
-	data('twitter_email');
-	data('email_address');
-	data('email_verifying_key');
-	data('email_verified');
-	data('web_ip');
-	data('cf_ip');
-	data('passed');
+	echo '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>';
+	table($row);
 	echo '<br>';
 }
+echo (?>
+	</tbody>
+</table>
+<?php)
