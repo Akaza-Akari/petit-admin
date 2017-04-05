@@ -1,4 +1,5 @@
 <?php
+ini_set("memory_limit" , -1);
 $config = require_once 'config.php';
 
 $rows = array();
