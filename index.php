@@ -24,6 +24,19 @@ if(!$result) {
 
 while($row = $result->fetch_array(MYSQLI_ASSOC))
 	$rows[] = $row;
-foreach($sqlarray as $row) {
-	echo 'Row Data : '.$row;
+foreach($rows as $row) {
+	function data($req) { global $row; echo $req.' : '.$row[$req]; echo '<br>'; }
+	data('number');
+	data('date');
+	data('noti_type');
+	data('osu_id');
+	data('osu_mode');
+	data('twitter_id');
+	data('twitter_email');
+	data('email_address');
+	data('email_verifying_key');
+	data('email_verified');
+	data('web_ip');
+	data('cf_ip');
+	data('passed');
 }
