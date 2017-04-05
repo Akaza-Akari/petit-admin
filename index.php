@@ -15,6 +15,8 @@ if ($conn->connect_error) {
 	die('Connection failed: ' . $conn->connect_error);
 }
 
+function data($req) { global $row; echo $req.' : '.$row[$req]; echo '<br>'; }
+
 $sql = "SELECT * FROM `".$db_table."`;";
 $result = $conn->query($sql);
 if(!$result) {
@@ -25,7 +27,6 @@ if(!$result) {
 while($row = $result->fetch_array(MYSQLI_ASSOC))
 	$rows[] = $row;
 foreach($rows as $row) {
-	function data($req) { global $row; echo $req.' : '.$row[$req]; echo '<br>'; }
 	data('number');
 	data('date');
 	data('noti_type');
