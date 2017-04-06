@@ -24,7 +24,7 @@ if($_POST['number']) {
 	}
 
 	$result['passed'] ?
-		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '0' WHERE `".$config['db_table']."`.`number` = ".$_POST['number'] :
+		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '0' WHERE `".$config['db_table']."`.`number` = ".$_POST['number']:
 		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '1' WHERE `".$config['db_table']."`.`number` = ".$_POST['number']; 
 	$result = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
 	if(!$result) {
@@ -62,6 +62,12 @@ if(!$result) {
 
 ?>
 <script>
+	function update() {
+		$.get(window.location.href, function(data) {
+			$("body").html(data);
+		});
+	}
+	
 	function ajaxPost(number){
 		$.ajax({
 			type: 'post',
@@ -72,7 +78,7 @@ if(!$result) {
 				alert(error);
 			},
 			success: function(json){
-				alert(json);
+				update();
 			},
 		});
 	}
