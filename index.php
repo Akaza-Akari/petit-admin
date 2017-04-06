@@ -30,6 +30,7 @@ function table($data) { ?>
 	<td><?php echo $data['web_ip']; ?></td>
 	<td><?php echo $data['cf_ip']; ?></td>
 	<td><?php echo $data['passed']; ?></td>
+	<td><a href="javascript:ajaxPost(<?php echo $data['number']; ?>)"<button type="button" class="btn btn-default">revert</button></td>
 </tr>
 <?php }
 
@@ -41,6 +42,22 @@ if(!$result) {
 }
 
 ?>
+<script>
+	function ajaxPost(number){
+		$.ajax({
+			type: 'post',
+			url: '/',
+			data: { 'number' : number},
+			dataType: 'json',
+			error: function(xhr, status, error){
+				alert(error);
+			}
+			success: function(json){
+				alert(json);
+			},
+		});
+	}
+</script>
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -57,6 +74,7 @@ if(!$result) {
 			<th>web_ip</th>
 			<th>cf_ip</th>
 			<th>passed</th>
+			<th>passed change</th>
 		</tr>
 	</thead>
 	<tbody>
