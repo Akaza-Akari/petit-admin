@@ -26,7 +26,7 @@ if($_POST['number']) {
 	$result['passed'] ?
 		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '0' WHERE `".$config['db_table']."`.`number` = ".$_POST['number'] :
 		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '1' WHERE `".$config['db_table']."`.`number` = ".$_POST['number']; 
-	$result = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
+	$result = $conn->query($sql);
 	if(!$result) {
 		echo $conn->error;
 		die();
@@ -61,6 +61,11 @@ if(!$result) {
 }
 
 ?>
+<style>
+	table {
+		overflow: scroll;
+	}
+</style>
 <script>
 	function update() {
 		$.get(window.location.href, function(data) {
