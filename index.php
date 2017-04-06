@@ -1,6 +1,9 @@
 <?php
 ini_set("memory_limit" , -1);
 $config = require_once 'config.php';
+require('osu-framework/include.php');
+
+$osu = new OsuTournament\Check();
 
 $rows = array();
 
@@ -58,12 +61,33 @@ function osuModeFancy($modeInt) {
 	}
 }
 
-function table($data) { ?>
+function getData($username, $mode) {
+	global $osu;
+
+	$osu->CheckUser($username, $mode);
+	isset($_SERVER['HTTP_CF_CONNECTING_IP']) ? $cf = $_SERVER['HTTP_CF_CONNECTING_IP'] : $cf = false;
+	return(array(
+		'pc' => $osu->Playcount,
+		'pp' => $osu->Performance,
+		'rank' => $osu->Rank,
+		'need_set' => $osu->Occupation_Set,
+		'now_set' => $osu->Occupation,
+		'username' => $osu->RealID,
+		'id' => $osu->OsuID,
+		'mode' => osuModeFancy($mode),
+		'mode_code' => $mode,
+		'ip' => $_SERVER['REMOTE_ADDR'],
+		'cf' => isset($cf) ? $cf : '',
+		)
+	);
+}
+
+function table($data, $osu_data) { ?>
 <tr>
 	<td><?php echo $data['number']; ?></td>
 	<td><?php echo $data['date']; ?></td>
 	<td><?php echo $data['noti_type']; ?></td>
-	<td><?php echo $data['osu_id']; ?></td>
+	<td><?php echo $osu_data['username']; ?></td>
 	<td><?php echo osuModeFancy($data['osu_mode']); ?></td>
 	<td><?php echo $data['twitter_id']; ?></td>
 	<td><?php echo $data['twitter_email']; ?></td>
@@ -115,20 +139,20 @@ if(!$result) {
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>number</th>
-			<th>date</th>
-			<th>noti_type</th>
-			<th>osu_id</th>
-			<th>osu_mode</th>
-			<th>twitter_id</th>
-			<th>twitter_email</th>
-			<th>email_address</th>
-			<th>email_verifying_key</th>
-			<th>email_verified</th>
-			<th>web_ip</th>
-			<th>cf_ip</th>
-			<th>passed</th>
-			<th>passed change</th>
+			<th>Count</th>
+			<th>Register Date</th>
+			<th>Notification Type</th>
+			<th>osu!username</th>
+			<th>osu!mode</th>
+			<th>Twitter ID</th>
+			<th>Twitter Email</th>
+			<th>Email Address</th>
+			<th>Email Verficate Key</th>
+			<th>Email Verified</th>
+			<th>Web IP</th>
+			<th>CloudFlare IP</th>
+			<th>Passed</th>
+			<th>Passed Change</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -138,7 +162,8 @@ while($row = $result->fetch_array(MYSQLI_ASSOC))
 foreach($rows as $row) {
 	echo '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>';
-	table($row);
+	$osu_data = getData($row['osu_id'], $row['osu_mode']);
+	table($row, $osu_data);
 	echo '<br>';
 }
 ?>
