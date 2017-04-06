@@ -34,21 +34,45 @@ if($_POST['number']) {
 	die($result);
 }
 
+function changeFalse($data, $value) {
+	return $data ? $data : $value;
+}
+
+function osuModeFancy($modeInt) {
+	switch($modeInt) {
+		case(0):
+			return 'osu!';
+			break;
+		case(1):
+			return 'Taiko';
+			break;
+		case(2):
+			return 'CatchTheBeat';
+			break;
+		case(3):
+			return 'osu!mania';
+			break;
+		default:
+			return 'Not Defined Mode';
+			break;
+	}
+}
+
 function table($data) { ?>
 <tr>
 	<td><?php echo $data['number']; ?></td>
 	<td><?php echo $data['date']; ?></td>
 	<td><?php echo $data['noti_type']; ?></td>
 	<td><?php echo $data['osu_id']; ?></td>
-	<td><?php echo $data['osu_mode']; ?></td>
+	<td><?php echo osuModeFancy($data['osu_mode']); ?></td>
 	<td><?php echo $data['twitter_id']; ?></td>
 	<td><?php echo $data['twitter_email']; ?></td>
 	<td><?php echo $data['email_address']; ?></td>
 	<td><?php echo $data['email_verifying_key']; ?></td>
 	<td><?php echo $data['email_verified']; ?></td>
-	<td><?php echo $data['web_ip']; ?></td>
-	<td><?php echo $data['cf_ip']; ?></td>
-	<td><?php echo $data['passed']; ?></td>
+	<td><?php echo changeFalse($data['web_ip'], 'No IP Data'); ?></td>
+	<td><?php echo changeFalse($data['cf_ip'], 'Not Connected with CloudFlare'); ?></td>
+	<td><?php echo $data['passed'] ? 'true' : 'false'; ?></td>
 	<td><a href="javascript:ajaxPost(<?php echo $data['number']; ?>)"<button type="button" class="btn btn-default">revert</button></td>
 </tr>
 <?php }
