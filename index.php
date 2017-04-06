@@ -15,6 +15,25 @@ if ($conn->connect_error) {
 	die('Connection failed: ' . $conn->connect_error);
 }
 
+if($_POST['number']) {
+	$sql = "SELECT * FROM `".$config['db_table']."` WHERE `number` = ".$_POST['number'];
+	$result = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
+	if(!$result) {
+		echo $conn->error;
+		die();
+	}
+
+	$result['passed'] ?
+		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '0' WHERE `".$config['db_table']."`.`number` = ".$_POST['number'] :
+		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '1' WHERE `".$config['db_table']."`.`number` = ".$_POST['number']; 
+	$result = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
+	if(!$result) {
+		echo $conn->error;
+		die();
+	}
+	die($result);
+}
+
 function table($data) { ?>
 <tr>
 	<td><?php echo $data['number']; ?></td>
@@ -47,11 +66,11 @@ if(!$result) {
 		$.ajax({
 			type: 'post',
 			url: '/',
-			data: { 'number' : number},
+			data: { 'number' : number },
 			dataType: 'json',
 			error: function(xhr, status, error){
 				alert(error);
-			}
+			},
 			success: function(json){
 				alert(json);
 			},
