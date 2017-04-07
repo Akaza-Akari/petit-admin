@@ -108,7 +108,7 @@ function obfuscate_email($email) {
 function table($data, $osu_data) { ?>
 <tr>
 	<td><?php echo $data['number']; ?></td>
-	<td><?php echo $data['noti_type']; ?></td>
+	<td><?php echo notitypeFancy($data['noti_type']); ?></td>
 	<td><?php echo $osu_data['username']; ?></td>
 	<td><?php echo osuModeFancy($data['osu_mode']); ?></td>
 	<td><?php echo $data['twitter_id']; ?></td>
