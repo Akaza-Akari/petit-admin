@@ -34,7 +34,10 @@ if($_POST['number']) {
 		echo $conn->error;
 		die();
 	}
-	die('{ "data":"'.$first ? 'false' : 'true'.'" }');
+	$passed_status = (int) !$first['passed'];
+	$passed_status ? $passed_status = 'true' : $passed_status = 'false';
+	echo('{ "data" : "'.$passed_status.'" }');
+	die();
 }
 
 function changeFalse($data, $value) {
@@ -91,9 +94,6 @@ function table($data, $osu_data) { ?>
 	<td><?php echo osuModeFancy($data['osu_mode']); ?></td>
 	<td><?php echo $data['twitter_id']; ?></td>
 	<td><?php echo $data['twitter_email']; ?></td>
-	<td><?php echo $data['email_address']; ?></td>
-	<td><?php echo $data['email_verifying_key']; ?></td>
-	<td><?php echo $data['email_verified']; ?></td>
 	<td><?php echo changeFalse($data['web_ip'], 'No IP Data'); ?></td>
 	<td><?php echo changeFalse($data['cf_ip'], 'Not Connected with CloudFlare'); ?></td>
 	<td id="data-num<?php echo $data['number']; ?>"><?php echo $data['passed'] ? 'true' : 'false'; ?></td>
@@ -115,7 +115,7 @@ if(!$result) {
 	}
 </style>
 <script>
-	function update(number, json) {
+	function updatePassed(number, json) {
 		//$.get(window.location.href, function(data) {
 			$("#data-num"+number).html(json.data.toString());
 		//});
@@ -131,7 +131,7 @@ if(!$result) {
 				alert(error);
 			},
 			success: function(json){
-				update(number, json);
+				updatePassed(number, json);
 			},
 		});
 	}
@@ -146,9 +146,6 @@ if(!$result) {
 			<th>osu!mode</th>
 			<th>Twitter ID</th>
 			<th>Twitter Email</th>
-			<th>Email Address</th>
-			<th>Email Verficate Key</th>
-			<th>Email Verified</th>
 			<th>Web IP</th>
 			<th>CloudFlare IP</th>
 			<th>Passed</th>
