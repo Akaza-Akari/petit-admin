@@ -117,7 +117,7 @@ if(!$result) {
 <script>
 	function update(number, json) {
 		//$.get(window.location.href, function(data) {
-			$("#data-num"+number).html(json.data);
+			$("#data-num"+number).html(json.data.toString());
 		//});
 	}
 
