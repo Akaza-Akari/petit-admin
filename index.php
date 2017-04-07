@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 }
 
 if($_POST['number']) {
-	$sql = "SELECT * FROM `".$config['db_table']."` WHERE `number` = ".$_POST['number'];
+	$sql = 'SELECT * FROM `'.$config['db_table'].'` WHERE `number` = '.$_POST['number'];
 	$first = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
 	if(!$first) {
 		echo $conn->error;
@@ -27,8 +27,8 @@ if($_POST['number']) {
 	}
 
 	$first['passed'] ?
-		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '0' WHERE `".$config['db_table']."`.`number` = ".$_POST['number'] :
-		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '1' WHERE `".$config['db_table']."`.`number` = ".$_POST['number']; 
+		$sql = 'UPDATE `'.$config['db_table'].'` SET `passed` = \'0\' WHERE `'.$config['db_table'].'`.`number` = '.$_POST['number'] :
+		$sql = 'UPDATE `'.$config['db_table'].'` SET `passed` = \'1\' WHERE `'.$config['db_table'].'`.`number` = '.$_POST['number']; 
 	$after = $conn->query($sql);
 	if(!$after) {
 		echo $conn->error;
@@ -80,9 +80,29 @@ function getData($username, $mode) {
 		'mode' => osuModeFancy($mode),
 		'mode_code' => $mode,
 		'ip' => $_SERVER['REMOTE_ADDR'],
-		'cf' => isset($cf) ? $cf : '',
+		'cf' => $cf,
 		)
 	);
+}
+
+function notitypeFancy($noti_type) {
+	switch($noti_type) {
+		case 'twitter':
+			return 'Twitter';
+			break;
+		default:
+			return 'Undefined Notification Type : '.$noti_type;
+			break;
+	}
+}
+
+function obfuscate_email($email) {
+	$em   = explode('@',$email);
+	$name = implode(array_slice($em, 0, count($em)-1), '@');
+	//$len  = floor(strlen($name)/2);
+	$len = 3;
+
+	return substr($name, 0, -3).str_repeat('*', $len).'@'.end($em);
 }
 
 function table($data, $osu_data) { ?>
@@ -92,7 +112,7 @@ function table($data, $osu_data) { ?>
 	<td><?php echo $osu_data['username']; ?></td>
 	<td><?php echo osuModeFancy($data['osu_mode']); ?></td>
 	<td><?php echo $data['twitter_id']; ?></td>
-	<td><?php echo $data['twitter_email']; ?></td>
+	<td><?php echo obfuscate_email($data['twitter_email']); ?></td>
 	<td><?php echo changeFalse($data['web_ip'], 'No IP Data'); ?></td>
 	<td><?php echo changeFalse($data['cf_ip'], 'Not Connected with CloudFlare'); ?></td>
 	<td id="data-num<?php echo $data['number']; ?>"><?php echo $data['passed'] ? 'true' : 'false'; ?></td>
@@ -100,7 +120,7 @@ function table($data, $osu_data) { ?>
 </tr>
 <?php }
 
-$sql = "SELECT * FROM `".$db_table."`;";
+$sql = 'SELECT * FROM `'.$db_table.'`;';
 $result = $conn->query($sql);
 if(!$result) {
 	echo $conn->error;
