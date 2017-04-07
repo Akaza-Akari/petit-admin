@@ -20,21 +20,21 @@ if ($conn->connect_error) {
 
 if($_POST['number']) {
 	$sql = "SELECT * FROM `".$config['db_table']."` WHERE `number` = ".$_POST['number'];
-	$result = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
-	if(!$result) {
+	$first = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
+	if(!$first) {
 		echo $conn->error;
 		die();
 	}
 
-	$result['passed'] ?
+	$first['passed'] ?
 		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '0' WHERE `".$config['db_table']."`.`number` = ".$_POST['number'] :
 		$sql = "UPDATE `".$config['db_table']."` SET `passed` = '1' WHERE `".$config['db_table']."`.`number` = ".$_POST['number']; 
-	$result = $conn->query($sql);
-	if(!$result) {
+	$after = $conn->query($sql);
+	if(!$after) {
 		echo $conn->error;
 		die();
 	}
-	die($result);
+	die('{ "data":"'.$first ? 'false' : 'true'.'" }');
 }
 
 function changeFalse($data, $value) {
@@ -96,7 +96,7 @@ function table($data, $osu_data) { ?>
 	<td><?php echo $data['email_verified']; ?></td>
 	<td><?php echo changeFalse($data['web_ip'], 'No IP Data'); ?></td>
 	<td><?php echo changeFalse($data['cf_ip'], 'Not Connected with CloudFlare'); ?></td>
-	<td><?php echo $data['passed'] ? 'true' : 'false'; ?></td>
+	<td id="data-num<?php echo $data['number']; ?>"><?php echo $data['passed'] ? 'true' : 'false'; ?></td>
 	<td><a href="javascript:ajaxPost(<?php echo $data['number']; ?>)"<button type="button" class="btn btn-default">revert</button></td>
 </tr>
 <?php }
@@ -115,10 +115,10 @@ if(!$result) {
 	}
 </style>
 <script>
-	function update() {
-		$.get(window.location.href, function(data) {
-			$("body").html(data);
-		});
+	function update(number, json) {
+		//$.get(window.location.href, function(data) {
+			$("#data-num"+number).html(json.data);
+		//});
 	}
 
 	function ajaxPost(number){
@@ -131,7 +131,7 @@ if(!$result) {
 				alert(error);
 			},
 			success: function(json){
-				update();
+				update(number, json);
 			},
 		});
 	}
