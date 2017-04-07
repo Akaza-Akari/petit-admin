@@ -88,7 +88,6 @@ function getData($username, $mode) {
 function table($data, $osu_data) { ?>
 <tr>
 	<td><?php echo $data['number']; ?></td>
-	<td><?php echo $data['date']; ?></td>
 	<td><?php echo $data['noti_type']; ?></td>
 	<td><?php echo $osu_data['username']; ?></td>
 	<td><?php echo osuModeFancy($data['osu_mode']); ?></td>
@@ -140,7 +139,6 @@ if(!$result) {
 	<thead>
 		<tr>
 			<th>Count</th>
-			<th>Register Date</th>
 			<th>Notification Type</th>
 			<th>osu!username</th>
 			<th>osu!mode</th>
