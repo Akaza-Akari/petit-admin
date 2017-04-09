@@ -1,17 +1,16 @@
 <?php
-ini_set("memory_limit" , -1);
-$config = require_once 'config.php';
+$config = parse_ini_file('config.ini', true);
 require('osu-framework/include.php');
 
 $osu = new OsuTournament\Check();
 
 $rows = array();
 
-$db_host = $config['db_host'];
-$db_user = $config['db_user'];
-$db_pass = $config['db_pass'];
-$db_name = $config['db_name'];
-$db_table = $config['db_table'];
+$db_host = $config['db']['host'];
+$db_user = $config['db']['user'];
+$db_pass = $config['db']['pass'];
+$db_name = $config['db']['name'];
+$db_table = $config['db']['table'];
 
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if ($conn->connect_error) {
@@ -19,7 +18,7 @@ if ($conn->connect_error) {
 }
 
 if($_POST['number']) {
-	$sql = 'SELECT * FROM `'.$config['db_table'].'` WHERE `number` = '.$_POST['number'];
+	$sql = 'SELECT * FROM `'.$db_table.'` WHERE `number` = '.$_POST['number'];
 	$first = $conn->query($sql)->fetch_array(MYSQLI_ASSOC);
 	if(!$first) {
 		echo $conn->error;
@@ -27,8 +26,8 @@ if($_POST['number']) {
 	}
 
 	$first['passed'] ?
-		$sql = 'UPDATE `'.$config['db_table'].'` SET `passed` = \'0\' WHERE `'.$config['db_table'].'`.`number` = '.$_POST['number'] :
-		$sql = 'UPDATE `'.$config['db_table'].'` SET `passed` = \'1\' WHERE `'.$config['db_table'].'`.`number` = '.$_POST['number']; 
+		$sql = 'UPDATE `'.$db_table.'` SET `passed` = \'0\' WHERE `'.$db_table.'`.`number` = '.$_POST['number']:
+		$sql = 'UPDATE `'.$db_table.'` SET `passed` = \'1\' WHERE `'.$db_table.'`.`number` = '.$_POST['number']; 
 	$after = $conn->query($sql);
 	if(!$after) {
 		echo $conn->error;
