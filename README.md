@@ -1,5 +1,5 @@
 # petit-admin
-osu!petit's Admin Site.
+osu!petit's Admin Site.  
 License under AGPL. More information in [Document](LICENSE)
 
 ## Configure
